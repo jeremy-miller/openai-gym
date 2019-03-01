@@ -17,25 +17,25 @@ class MountainCar:
     def run(self):
         for episode in range(self._episodes):
             done = False
-            state = self._env.reset()
-            discrete_state = self._discretize_state_space(state)
+            initial_state = self._env.reset()
+            discrete_state1 = self._discretize_state_space(initial_state)
             while not done:
                 self._render(episode)
-                action = self._get_action_for_state(discrete_state)
+                action = self._get_action(discrete_state1)
                 state2, reward, done, _ = self._env.step(action)
                 discrete_state2 = self._discretize_state_space(state2)
                 if done and state2[0] >= 0.5:  # successfully reached the flag
-                    self._q_table[discrete_state[0], discrete_state[1], action] = reward
+                    self._q_table[discrete_state1[0], discrete_state1[1], action] = reward
                 else:
-                    self._update_q_table(discrete_state, discrete_state2, action, reward)
-                discrete_state = discrete_state2
+                    self._update_q_table(discrete_state1, discrete_state2, action, reward)
+                discrete_state1 = discrete_state2
             self._decay_epsilon()
         self._env.close()
 
     def _initialize_q_table(self):
         """
-        Q table values will look like Q(s1, s2, a) where "s1" is the cart position, "s2" is cart velocity,
-        and "a" is the action.
+        The Q table will be a 3 dimensional array where each element can be found using the lookup
+        Q(s1, s2, a), where "s1" is the cart position, "s2" is cart velocity, and "a" is the action.
 
         This function generates an initial Q table with random, uniform values. Since the Q table must cover
         all possible state-action pairs, the table will contain (cart position * cart velocity * number of
@@ -78,12 +78,16 @@ class MountainCar:
         """
         Only render the final few episodes.
 
-        This speeds up processing, but still shows the episodes after the learning has finished.
+        This speeds up processing, but still shows the episodes once the learning has nearly finished.
         """
         if episode >= (self._episodes - self._rendered_episodes):
             self._env.render()
 
-    def _get_action_for_state(self, state):
+    def _get_action(self, state):
+        """
+        Get the next action. This action will either be the best possible action for the given state, or
+        a random action using the epsilon-greedy learning strategy.
+        """
         if np.random.random() < 1 - self._epsilon:
             return np.argmax(self._q_table[state[0], state[1]])
         else:
@@ -92,7 +96,7 @@ class MountainCar:
     def _update_q_table(self, old_state, new_state, action, reward):
         """
         Update the Q-value for the old state using the observed reward of the old state and the maximum
-        reward possible for the new state.
+        possible reward for the new state.
         """
         max_possible_reward = np.max(self._q_table[new_state[0], new_state[1]])
         observed_reward = self._q_table[old_state[0], old_state[1], action]
@@ -100,7 +104,11 @@ class MountainCar:
         self._q_table[old_state[0], old_state[1], action] += delta
 
     def _decay_epsilon(self):
-        """Linearly decay epsilon over the total number of episodes."""
+        """
+        Linearly decay epsilon each episode over the total number of episodes.  This means we will focus
+        learning at the beginning of the run, and use learned actions more frequently as the episodes
+        progress.
+        """
         if self._epsilon > self._min_epsilon:
             self._epsilon -= self._epsilon_reduction_rate
 
