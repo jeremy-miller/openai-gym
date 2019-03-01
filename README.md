@@ -17,5 +17,10 @@ To install dependencies:
 ## Code Format
 To format all Python source code (using [black](https://github.com/ambv/black)): `black .`
 
+## Run
+To run an environment:
+1. Move into the directory whose environment you want to execute
+2. Execute the environment: `python main.py`
+
 ## License
 [MIT](https://github.com/jeremy-miller/openai-gym/blob/master/LICENSE)
