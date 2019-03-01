@@ -13,17 +13,20 @@ class MountainCar:
 
     def _initialize_q_table(self):
         """
-        Q table values will look like Q(s1, s2, a) where s1 is the cart position and s2 is cart velocity.
+        Q table values will look like Q(s1, s2, a) where "s1" is the cart position, "s2" is cart velocity,
+        and "a" is the action.
 
-        The action space is 0, 1, and 2.
-
-        This function generates an initial Q table with random, uniform values. The size of the table will
-        be (cart position * cart velocity * number of actions).
+        This function generates an initial Q table with random, uniform values. Since the Q table must cover
+        all possible state-action pairs, the size of the table will contain
+        (cart position * cart velocity * number of actions) cells.
         """
-        state_space = self._get_state_space()
-        return np.random.uniform(low=-1, high=1, size=(state_space[0], state_space[1], self._env.action_space.n))
+        state_space = self._get_state_space_range()
+        cart_position_range = state_space[0]
+        cart_velocity_range = state_space[1]
+        action_space_range = self._get_action_space_range()
+        return np.random.uniform(low=-1, high=1, size=(cart_position_range, cart_velocity_range, action_space_range))
 
-    def _get_state_space(self):
+    def _get_state_space_range(self):
         """
         The state space of the MountainCar environment ranges from [-1.2 -0.07] to [0.6 0.07] where the
         state vector represents [<cart's position> <cart's velocity>]. Therefore, the cart's position can
@@ -39,6 +42,10 @@ class MountainCar:
         state_space = self._env.observation_space.high - self._env.observation_space.low
         state_space = state_space * np.array([10, 100])
         return np.round(state_space, decimals=0).astype(int)
+
+    def _get_action_space_range(self):
+        """The action space is 3 discrete values (i.e. 0, 1, 2)"""
+        return self._env.action_space.n
 
 
 if __name__ == '__main__':
