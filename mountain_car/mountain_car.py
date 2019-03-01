@@ -33,11 +33,11 @@ class MountainCar:
         range from -1.2 to 0.6 and the cart's velocity can range from -0.07 to 0.07.
 
         Since the state space is continuous (i.e. floats and not integers), and Q learning requires each
-        state-action pair to be visited a sufficiently large number of times, we can "discretize" the state
-        space by rounding the first element of the state vector (cart's position) to the nearest 0.1 and
-        the second element of the state vector (cart's velocity) to the nearest 0.01, and then multiplying
-        the first element by 10 and the second element by 100.  This will give us a state space of 855
-        state-action pairs.
+        state-action pair to be visited a sufficiently large number of times, we can convert the state space
+        to discrete values by rounding the first element of the state vector (cart's position) to the nearest
+        0.1 and the second element of the state vector (cart's velocity) to the nearest 0.01, and then
+        multiplying the first element by 10 and the second element by 100.  This will give us a state space
+        of 855 unique state-action pairs.
         """
         state_space = self._env.observation_space.high - self._env.observation_space.low
         state_space = state_space * np.array([10, 100])
