@@ -105,5 +105,5 @@ class MountainCar:
             self._epsilon -= self._epsilon_reduction_rate
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     MountainCar(0.2, 0.9, 0.8, 0, 5000).run()
