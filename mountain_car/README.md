@@ -17,5 +17,4 @@ approximately -0.5), and the episode ends when either the car reaches the flag (
 moves. At each move, the car has three actions available to it: push left, push right or do nothing. A penalty
 of 1 unit is applied for each move taken (including doing nothing).
 
-[This](https://towardsdatascience.com/getting-started-with-reinforcement-learning-and-open-ai-gym-c289aca874f)
-same blog post is used as inspiration for my implementation.
+This same blog post is used as inspiration for my implementation.
