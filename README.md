@@ -18,8 +18,5 @@ To install dependencies:
 ## Code Format
 To format all Python source code (using [black](https://github.com/ambv/black)): `black .`
 
-## Static Code Analysis
-To run static code analysis (using [prospector](https://github.com/PyCQA/prospector)): `prospector`
-
 ## License
 [MIT](https://github.com/jeremy-miller/openai-gym/blob/master/LICENSE)
