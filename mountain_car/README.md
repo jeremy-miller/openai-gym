@@ -14,7 +14,7 @@ blog post:
 The car’s state, at any point in time, is given by a vector containing its horizontal position and velocity.
 The car commences each episode stationary, at the bottom of the valley between the mountains (at position
 approximately -0.5), and the episode ends when either the car reaches the flag (position > 0.5) or after 200
-moves. At each move, the car has three actions available to it: push left, push right or do nothing. A penalty
-of 1 unit is applied for each move taken (including doing nothing).
+moves. At each step, the car has three actions available to it: push left, push right or do nothing. A
+penalty of 1 unit is applied for each step taken (including doing nothing).
 
 This same blog post is used as inspiration for my implementation.
